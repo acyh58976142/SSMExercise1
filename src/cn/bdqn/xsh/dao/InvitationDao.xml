@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "http://mybatis.org/dtd/mybatis-3-mapper.dtd" "mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bdqn.xsh.dao.InvitationDao">
+	<!--当name为空时，查看所有的发帖信息（分页）；当name不为空时，可查询帖子（分页），按照发布时间降序排列-->
+	<select id="getInvitationByPageAndName" resultType="Invitation">
+		SELECT id, title, summary, author, createdate FROM invitation
+		<where>
+			<if test="name!=null">
+				title like concat('%',#{name},'%')
+			</if>
+		</where>
+		order by createdate desc
+		limit #{startNum}, #{pageSize}
+	</select>
+
+	<!--当name为空时，获取所有的发帖数量，当name不为空时，获取满足条件的发帖数量-->
+	<select id="getInvitationCount" resultType="Integer">
+		select count(*) from invitation
+		<where>
+			<if test="name!=null">
+				title like concat('%',#{name},'%')
+			</if>
+		</where>
+	</select>
+
+	<!--删除帖子-->
+	<delete id="deleteInvitation">
+		delete from invitation where id=#{id}
+	</delete>
+</mapper>

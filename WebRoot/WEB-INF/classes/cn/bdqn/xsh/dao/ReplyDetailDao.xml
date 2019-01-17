@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "http://mybatis.org/dtd/mybatis-3-mapper.dtd" "mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bdqn.xsh.dao.ReplyDetailDao">
+	<!--查看回复（分页）-->
+	<select id="getReplyDetailByPage" resultType="ReplyDetail">
+		SELECT id, invid,
+		content, author, createdate FROM reply_detail where
+		invid=#{invid}
+		order by createdate desc limit #{startNum}, #{pageSize}
+	</select>
+
+	<!--获取回复的总数量-->
+	<select id="getReplyDetailCount" resultType="Integer">
+		select count(*) from
+		reply_detail where invid=#{invid}
+	</select>
+
+	<!--添加回复-->
+	<insert id="addReplyDetail">
+		insert into reply_detail (id, invid, content, author,
+		createdate) values
+		(null, #{invid}, #{content}, #{author}, now())
+	</insert>
+
+	<!--删除回复-->
+	<delete id="deleteReplyDetail">
+		delete from reply_detail where invid=#{invid}
+	</delete>
+</mapper>
